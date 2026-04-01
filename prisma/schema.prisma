@@ -58,13 +58,15 @@ model User {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  borough           Borough       @relation(fields: [boroughId], references: [id])
+  borough           Borough            @relation(fields: [boroughId], references: [id])
   pets              Pet[]
-  hostedEvents      WalkEvent[]   @relation("HostEvents")
-  walkRequestsSent  WalkRequest[] @relation("RequestsSent")
-  walkRequestsRecv  WalkRequest[] @relation("RequestsRecv")
+  hostedEvents      WalkEvent[]        @relation("HostEvents")
+  walkRequestsSent  WalkRequest[]      @relation("RequestsSent")
+  walkRequestsRecv  WalkRequest[]      @relation("RequestsRecv")
   eventParticipants EventParticipant[]
   routeReviews      Review[]
+
+  @@index([boroughId])
 }
 
 model Pet {
@@ -81,7 +83,9 @@ model Pet {
   specialNeeds     String?
   photoUrl         String?
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
 }
 
 model Borough {
@@ -93,7 +97,7 @@ model Borough {
 }
 
 model WalkRoute {
-  id             String    @id @default(cuid())
+  id             String   @id @default(cuid())
   boroughId      String
   name           String
   locationLabel  String
@@ -103,19 +107,21 @@ model WalkRoute {
   durationMin    Int
   difficulty     String
   surface        String
-  shaded         Boolean   @default(false)
-  accessible     Boolean   @default(false)
-  dogFriendly    Boolean   @default(true)
-  popularity     Int       @default(0)
+  shaded         Boolean  @default(false)
+  accessible     Boolean  @default(false)
+  dogFriendly    Boolean  @default(true)
+  popularity     Int      @default(0)
   description    String
   tips           String?
   amenities      String[]
-  averageRating  Float     @default(0)
-  createdAt      DateTime  @default(now())
+  averageRating  Float    @default(0)
+  createdAt      DateTime @default(now())
 
   borough Borough     @relation(fields: [boroughId], references: [id])
   events  WalkEvent[]
   reviews Review[]
+
+  @@index([boroughId])
 }
 
 model WalkEvent {
@@ -129,9 +135,12 @@ model WalkEvent {
   isPublic        Boolean  @default(true)
   createdAt       DateTime @default(now())
 
-  route        WalkRoute          @relation(fields: [routeId], references: [id])
+  route        WalkRoute          @relation(fields: [routeId], references: [id], onDelete: Cascade)
   host         User               @relation("HostEvents", fields: [hostUserId], references: [id])
   participants EventParticipant[]
+
+  @@index([routeId])
+  @@index([hostUserId])
 }
 
 model EventParticipant {
@@ -139,10 +148,12 @@ model EventParticipant {
   eventId String
   userId  String
 
-  event WalkEvent @relation(fields: [eventId], references: [id])
-  user  User      @relation(fields: [userId], references: [id])
+  event WalkEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
 }
 
 model WalkRequest {
@@ -153,8 +164,11 @@ model WalkRequest {
   status     RequestStatus @default(pending)
   createdAt  DateTime      @default(now())
 
-  fromUser User @relation("RequestsSent", fields: [fromUserId], references: [id])
-  toUser   User @relation("RequestsRecv", fields: [toUserId], references: [id])
+  fromUser User @relation("RequestsSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("RequestsRecv", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@index([fromUserId])
+  @@index([toUserId])
 }
 
 model Review {
@@ -165,6 +179,9 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
 
-  route WalkRoute @relation(fields: [routeId], references: [id])
-  user  User      @relation(fields: [userId], references: [id])
+  route WalkRoute @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([routeId])
+  @@index([userId])
 }

@@ -4,14 +4,15 @@ export type UserProfile = {
   id: string;
   displayName: string;
   photoUrl: string;
-  borough: string;
+  boroughId: string;
+  boroughName?: string;
   bio: string;
   language: Locale;
   availability: string;
   activityLevel: "calme" | "modere" | "sportif";
   walkPreference: "courte" | "moyenne" | "longue";
   trustScore: number;
-  badges: string[];
+  badges?: string[];
 };
 
 export type PetProfile = {
@@ -31,8 +32,9 @@ export type PetProfile = {
 
 export type WalkRoute = {
   id: string;
+  boroughId: string;
   name: string;
-  citySector: string;
+  locationLabel: string;
   lat: number;
   lng: number;
   distanceKm: number;
@@ -46,7 +48,8 @@ export type WalkRoute = {
   description: string;
   tips: string;
   amenities: string[];
-  rating: number;
+  averageRating: number;
+  createdAt?: string;
 };
 
 export type WalkEvent = {
@@ -55,16 +58,18 @@ export type WalkEvent = {
   routeId: string;
   hostUserId: string;
   meetingPoint: string;
-  startAt: string;
+  startsAt: string;
   maxParticipants: number;
   isPublic: boolean;
-  participants: string[];
+  participantIds: string[];
+  createdAt?: string;
 };
 
 export type WalkRequest = {
   id: string;
   fromUserId: string;
   toUserId: string;
-  status: "pending" | "accepted";
+  status: "pending" | "accepted" | "declined";
   message: string;
+  createdAt?: string;
 };

@@ -13,13 +13,13 @@ export default function RouteDetailPage({ params }: Props) {
       <div className="card">
         <p>{route.description}</p>
         <ul className="mt-2 space-y-1 text-sm">
-          <li>Localisation: {route.citySector}</li>
+          <li>Localisation: {route.locationLabel}</li>
           <li>Distance: {route.distanceKm} km</li>
           <li>Durée estimée: {route.durationMin} min</li>
           <li>Difficulté: {route.difficulty}</li>
           <li>Conseils: {route.tips}</li>
           <li>Équipements: {route.amenities.join(", ")}</li>
-          <li>Note moyenne: {route.rating}/5</li>
+          <li>Note moyenne: {route.averageRating}/5</li>
         </ul>
       </div>
       <div className="card">

@@ -1,12 +1,12 @@
 import { PetProfile, UserProfile, WalkEvent, WalkRequest, WalkRoute } from "./types";
 
-export const neighborhoods = [
-  "Plateau-Mont-Royal",
-  "Rosemont–La Petite-Patrie",
-  "Verdun",
-  "Villeray",
-  "Laval-des-Rapides",
-  "Longueuil Vieux-Longueuil"
+export const boroughs = [
+  { id: "b-plateau", name: "Plateau-Mont-Royal" },
+  { id: "b-rosemont", name: "Rosemont–La Petite-Patrie" },
+  { id: "b-verdun", name: "Verdun" },
+  { id: "b-villeray", name: "Villeray" },
+  { id: "b-laval", name: "Laval-des-Rapides" },
+  { id: "b-longueuil", name: "Longueuil Vieux-Longueuil" }
 ];
 
 export const users: UserProfile[] = [
@@ -14,7 +14,8 @@ export const users: UserProfile[] = [
     id: "u1",
     displayName: "Camille",
     photoUrl: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=400",
-    borough: "Plateau-Mont-Royal",
+    boroughId: "b-plateau",
+    boroughName: "Plateau-Mont-Royal",
     bio: "J'adore les marches matinales près du Mont-Royal.",
     language: "fr",
     availability: "Semaine 7h-9h, dimanche après-midi",
@@ -27,7 +28,8 @@ export const users: UserProfile[] = [
     id: "u2",
     displayName: "Alex",
     photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
-    borough: "Verdun",
+    boroughId: "b-verdun",
+    boroughName: "Verdun",
     bio: "Looking for canal walks and chill evening groups.",
     language: "en",
     availability: "Weekdays after 18:00",
@@ -40,7 +42,8 @@ export const users: UserProfile[] = [
     id: "u3",
     displayName: "Nadia",
     photoUrl: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400",
-    borough: "Laval-des-Rapides",
+    boroughId: "b-laval",
+    boroughName: "Laval-des-Rapides",
     bio: "Je fais des longues promenades au bord de la rivière.",
     language: "fr",
     availability: "Samedi matin et mardi soir",
@@ -97,18 +100,18 @@ export const pets: PetProfile[] = [
 ];
 
 export const routes: WalkRoute[] = [
-  { id: "r1", name: "Boucle du Mont-Royal", citySector: "Montréal", lat: 45.5048, lng: -73.5878, distanceKm: 5.4, durationMin: 90, difficulty: "moderate", surface: "mixte", shaded: true, accessible: false, dogFriendly: true, popularity: 95, description: "Boucle panoramique autour du parc du Mont-Royal.", tips: "Apporter de l'eau et une laisse courte sur les sections achalandées.", amenities: ["fontaine", "toilettes", "stationnement"], rating: 4.8 },
-  { id: "r2", name: "Parc La Fontaine - circuit lacs", citySector: "Montréal", lat: 45.5264, lng: -73.5695, distanceKm: 2.7, durationMin: 45, difficulty: "easy", surface: "asphalte", shaded: true, accessible: true, dogFriendly: true, popularity: 87, description: "Circuit convivial autour des bassins et sentiers du parc.", tips: "Idéal tôt le matin pour des chiens plus anxieux.", amenities: ["toilettes", "bancs", "café"], rating: 4.6 },
-  { id: "r3", name: "Canal de Lachine - tronçon Atwater", citySector: "Sud-Ouest", lat: 45.4794, lng: -73.5756, distanceKm: 6.2, durationMin: 95, difficulty: "easy", surface: "asphalte", shaded: false, accessible: true, dogFriendly: true, popularity: 92, description: "Long ruban riverain parfait pour rythme soutenu.", tips: "Peu d'ombre en été, sortir tôt.", amenities: ["eau", "toilettes", "station BIXI"], rating: 4.7 },
-  { id: "r4", name: "Parc Maisonneuve - anneau vert", citySector: "Mercier–Hochelaga-Maisonneuve", lat: 45.5579, lng: -73.5499, distanceKm: 4.1, durationMin: 65, difficulty: "easy", surface: "gravier", shaded: true, accessible: true, dogFriendly: true, popularity: 78, description: "Parcours large et calme, super pour socialisation.", tips: "Choisir le côté jardin botanique pour plus d'ombre.", amenities: ["toilettes", "aire de repos"], rating: 4.4 },
-  { id: "r5", name: "Île-des-Soeurs - berge centrale", citySector: "Verdun", lat: 45.4678, lng: -73.543, distanceKm: 3.8, durationMin: 55, difficulty: "easy", surface: "mixte", shaded: true, accessible: true, dogFriendly: true, popularity: 73, description: "Parcours paisible au bord du fleuve.", tips: "Vent soutenu en automne, prévoir manteau pour petit chien.", amenities: ["bancs", "stationnement"], rating: 4.3 },
-  { id: "r6", name: "Laval riverfront - Berge des Prairies", citySector: "Laval", lat: 45.5618, lng: -73.7499, distanceKm: 5.9, durationMin: 90, difficulty: "moderate", surface: "mixte", shaded: false, accessible: true, dogFriendly: true, popularity: 69, description: "Promenade riveraine panoramique sur la Rive-Nord.", tips: "Présence de cyclistes, garder sa droite.", amenities: ["bancs", "fontaine"], rating: 4.2 }
+  { id: "r1", boroughId: "b-plateau", name: "Boucle du Mont-Royal", locationLabel: "Montréal", lat: 45.5048, lng: -73.5878, distanceKm: 5.4, durationMin: 90, difficulty: "moderate", surface: "mixte", shaded: true, accessible: false, dogFriendly: true, popularity: 95, description: "Boucle panoramique autour du parc du Mont-Royal.", tips: "Apporter de l'eau et une laisse courte sur les sections achalandées.", amenities: ["fontaine", "toilettes", "stationnement"], averageRating: 4.8 },
+  { id: "r2", boroughId: "b-plateau", name: "Parc La Fontaine - circuit lacs", locationLabel: "Montréal", lat: 45.5264, lng: -73.5695, distanceKm: 2.7, durationMin: 45, difficulty: "easy", surface: "asphalte", shaded: true, accessible: true, dogFriendly: true, popularity: 87, description: "Circuit convivial autour des bassins et sentiers du parc.", tips: "Idéal tôt le matin pour des chiens plus anxieux.", amenities: ["toilettes", "bancs", "café"], averageRating: 4.6 },
+  { id: "r3", boroughId: "b-verdun", name: "Canal de Lachine - tronçon Atwater", locationLabel: "Sud-Ouest", lat: 45.4794, lng: -73.5756, distanceKm: 6.2, durationMin: 95, difficulty: "easy", surface: "asphalte", shaded: false, accessible: true, dogFriendly: true, popularity: 92, description: "Long ruban riverain parfait pour rythme soutenu.", tips: "Peu d'ombre en été, sortir tôt.", amenities: ["eau", "toilettes", "station BIXI"], averageRating: 4.7 },
+  { id: "r4", boroughId: "b-rosemont", name: "Parc Maisonneuve - anneau vert", locationLabel: "Mercier–Hochelaga-Maisonneuve", lat: 45.5579, lng: -73.5499, distanceKm: 4.1, durationMin: 65, difficulty: "easy", surface: "gravier", shaded: true, accessible: true, dogFriendly: true, popularity: 78, description: "Parcours large et calme, super pour socialisation.", tips: "Choisir le côté jardin botanique pour plus d'ombre.", amenities: ["toilettes", "aire de repos"], averageRating: 4.4 },
+  { id: "r5", boroughId: "b-verdun", name: "Île-des-Soeurs - berge centrale", locationLabel: "Verdun", lat: 45.4678, lng: -73.543, distanceKm: 3.8, durationMin: 55, difficulty: "easy", surface: "mixte", shaded: true, accessible: true, dogFriendly: true, popularity: 73, description: "Parcours paisible au bord du fleuve.", tips: "Vent soutenu en automne, prévoir manteau pour petit chien.", amenities: ["bancs", "stationnement"], averageRating: 4.3 },
+  { id: "r6", boroughId: "b-laval", name: "Laval riverfront - Berge des Prairies", locationLabel: "Laval", lat: 45.5618, lng: -73.7499, distanceKm: 5.9, durationMin: 90, difficulty: "moderate", surface: "mixte", shaded: false, accessible: true, dogFriendly: true, popularity: 69, description: "Promenade riveraine panoramique sur la Rive-Nord.", tips: "Présence de cyclistes, garder sa droite.", amenities: ["bancs", "fontaine"], averageRating: 4.2 }
 ];
 
 export const walkEvents: WalkEvent[] = [
-  { id: "e1", title: "Marche socialisation du Plateau", routeId: "r2", hostUserId: "u1", meetingPoint: "Entrée Rachel / Calixa-Lavallée", startAt: "2026-04-06T10:00:00.000Z", maxParticipants: 8, isPublic: true, participants: ["u1", "u2"] },
-  { id: "e2", title: "Canal sunset walk", routeId: "r3", hostUserId: "u2", meetingPoint: "Marché Atwater (coin Notre-Dame)", startAt: "2026-04-07T22:00:00.000Z", maxParticipants: 6, isPublic: true, participants: ["u2"] },
-  { id: "e3", title: "Sortie seniors-friendly", routeId: "r6", hostUserId: "u3", meetingPoint: "Belvédère Berge des Prairies", startAt: "2026-04-10T13:00:00.000Z", maxParticipants: 5, isPublic: false, participants: ["u3", "u1"] }
+  { id: "e1", title: "Marche socialisation du Plateau", routeId: "r2", hostUserId: "u1", meetingPoint: "Entrée Rachel / Calixa-Lavallée", startsAt: "2026-04-06T10:00:00.000Z", maxParticipants: 8, isPublic: true, participantIds: ["u1", "u2"] },
+  { id: "e2", title: "Canal sunset walk", routeId: "r3", hostUserId: "u2", meetingPoint: "Marché Atwater (coin Notre-Dame)", startsAt: "2026-04-07T22:00:00.000Z", maxParticipants: 6, isPublic: true, participantIds: ["u2"] },
+  { id: "e3", title: "Sortie seniors-friendly", routeId: "r6", hostUserId: "u3", meetingPoint: "Belvédère Berge des Prairies", startsAt: "2026-04-10T13:00:00.000Z", maxParticipants: 5, isPublic: false, participantIds: ["u3", "u1"] }
 ];
 
 export const walkRequests: WalkRequest[] = [

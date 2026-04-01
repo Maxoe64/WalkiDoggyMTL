@@ -1,19 +1,27 @@
+"use client";
+
+import { useState } from "react";
 import { EventCard } from "@/components/event-card";
-import { walkEvents } from "@/lib/data";
+import { EventForm } from "@/components/event-form";
+import { walkEvents as initialEvents } from "@/lib/data";
+import { WalkEvent } from "@/lib/types";
+import { useLocale } from "@/lib/locale-context";
+import { t } from "@/lib/i18n";
 
 export default function EventsPage() {
+  const { locale } = useLocale();
+  const [events, setEvents] = useState<WalkEvent[]>(initialEvents);
+
+  function handleCreateEvent(newEvent: WalkEvent) {
+    setEvents((prev) => [newEvent, ...prev]);
+  }
+
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Marches planifiées</h1>
-      <form className="card grid gap-2 md:grid-cols-2">
-        <input placeholder="Titre de la marche" className="rounded-xl border p-2" />
-        <input placeholder="Point de rencontre (public)" className="rounded-xl border p-2" />
-        <input type="datetime-local" className="rounded-xl border p-2" />
-        <input type="number" min={2} max={20} placeholder="Participants max" className="rounded-xl border p-2" />
-        <button className="rounded-xl bg-pine-500 px-4 py-2 text-white md:col-span-2">Créer une marche</button>
-      </form>
+      <h1 className="text-2xl font-bold">{t(locale, "pageEvents")}</h1>
+      <EventForm onCreateEvent={handleCreateEvent} />
       <div className="grid gap-3 md:grid-cols-2">
-        {walkEvents.map((event) => <EventCard key={event.id} event={event} />)}
+        {events.map((event) => <EventCard key={event.id} event={event} />)}
       </div>
     </div>
   );
