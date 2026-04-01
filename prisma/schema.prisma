@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Language {
+  fr
+  en
+}
+
+enum ActivityLevel {
+  calme
+  modere
+  sportif
+}
+
+enum WalkPreference {
+  courte
+  moyenne
+  longue
+}
+
+enum EnergyLevel {
+  low
+  medium
+  high
+}
+
+enum SociabilityLevel {
+  low
+  medium
+  high
+}
+
+enum RequestStatus {
+  pending
+  accepted
+  declined
+}
+
+model User {
+  id             String         @id @default(cuid())
+  email          String         @unique
+  passwordHash   String
+  displayName    String
+  photoUrl       String?
+  boroughId      String
+  bio            String?
+  language       Language       @default(fr)
+  availability   String?
+  activityLevel  ActivityLevel  @default(modere)
+  walkPreference WalkPreference @default(moyenne)
+  trustScore     Float          @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  borough           Borough            @relation(fields: [boroughId], references: [id])
+  pets              Pet[]
+  hostedEvents      WalkEvent[]        @relation("HostEvents")
+  walkRequestsSent  WalkRequest[]      @relation("RequestsSent")
+  walkRequestsRecv  WalkRequest[]      @relation("RequestsRecv")
+  eventParticipants EventParticipant[]
+  routeReviews      Review[]
+
+  @@index([boroughId])
+}
+
+model Pet {
+  id               String           @id @default(cuid())
+  ownerId          String
+  name             String
+  animalType       String           @default("dog")
+  breed            String?
+  size             String?
+  age              Int?
+  energyLevel      EnergyLevel      @default(medium)
+  dogSociability   SociabilityLevel @default(medium)
+  humanSociability SociabilityLevel @default(medium)
+  specialNeeds     String?
+  photoUrl         String?
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+}
+
+model Borough {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  regionGroup String
+  users       User[]
+  routes      WalkRoute[]
+}
+
+model WalkRoute {
+  id             String   @id @default(cuid())
+  boroughId      String
+  name           String
+  locationLabel  String
+  lat            Float
+  lng            Float
+  distanceKm     Float
+  durationMin    Int
+  difficulty     String
+  surface        String
+  shaded         Boolean  @default(false)
+  accessible     Boolean  @default(false)
+  dogFriendly    Boolean  @default(true)
+  popularity     Int      @default(0)
+  description    String
+  tips           String?
+  amenities      String[]
+  averageRating  Float    @default(0)
+  createdAt      DateTime @default(now())
+
+  borough Borough     @relation(fields: [boroughId], references: [id])
+  events  WalkEvent[]
+  reviews Review[]
+
+  @@index([boroughId])
+}
+
+model WalkEvent {
+  id              String   @id @default(cuid())
+  routeId         String
+  hostUserId      String
+  title           String
+  meetingPoint    String
+  startsAt        DateTime
+  maxParticipants Int
+  isPublic        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  route        WalkRoute          @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  host         User               @relation("HostEvents", fields: [hostUserId], references: [id])
+  participants EventParticipant[]
+
+  @@index([routeId])
+  @@index([hostUserId])
+}
+
+model EventParticipant {
+  id      String @id @default(cuid())
+  eventId String
+  userId  String
+
+  event WalkEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model WalkRequest {
+  id         String        @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  message    String
+  status     RequestStatus @default(pending)
+  createdAt  DateTime      @default(now())
+
+  fromUser User @relation("RequestsSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("RequestsRecv", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@index([fromUserId])
+  @@index([toUserId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  routeId   String
+  userId    String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  route WalkRoute @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([routeId])
+  @@index([userId])
+}
